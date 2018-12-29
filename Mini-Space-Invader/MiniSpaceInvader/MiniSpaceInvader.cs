@@ -28,21 +28,25 @@ namespace MiniSpaceInveder
             int rowOfSpaceShip = Console.BufferHeight - 1;
             int colOfSpaceShip = 0;
 
-            char spaceShipProjectile = '|';
+            char spaceShipProjectile = '*';
 
             // Setting up the enemy generator
 
             Random enemyGenarator = new Random();
-            int minGeneratedRow = 0;
+            int minGeneratedRow = 2;
             int maxGeneratedRow = Console.WindowHeight / 2;
-            int minGeneratedCol = 0;
-            int maxGeneratedCol = Console.WindowWidth;
+            int minGeneratedCol = 2;
+            int maxGeneratedCol = Console.WindowWidth - 2;
+
+            // Setting points and live for player
 
             int playerPoints = 0;
+            int playerLife = 0;
+            //bool isHaveALive = false;
 
             // Setting up the enemies
 
-            char enemy = '*';
+            char enemy = '.';
             int rowOfEnemy = enemyGenarator.Next(minGeneratedRow, maxGeneratedRow);
             int colOfEnemy = enemyGenarator.Next(minGeneratedCol, maxGeneratedCol);
 
@@ -75,7 +79,9 @@ namespace MiniSpaceInveder
 
                     while (rowOfProjectile > 0) // Shoot the enemy
                     {
-                        Console.Clear();
+                        Console.Clear(); // clear code
+
+                        // Print positions of projectile, spaceShip and enemy
 
                         Console.SetCursorPosition(colOfProjectile, rowOfProjectile);
                         Console.Write(spaceShipProjectile);
@@ -86,11 +92,26 @@ namespace MiniSpaceInveder
                         Console.SetCursorPosition(colOfEnemy, rowOfEnemy);
                         Console.Write(enemy);
 
-                        Thread.Sleep(20); // slow down the execution
+                        Thread.Sleep(30); // slow down the execution
 
                         if (rowOfProjectile == rowOfEnemy && colOfProjectile == colOfEnemy) // when shoot the enemy
                         {
                             playerPoints++;
+
+                            if (playerPoints % 5 == 0)
+                            {
+                                playerLife++;
+
+                                // Print message in the middle of console
+
+                                string messageWhenWinLive = "You win 1 Life";
+                                Console.SetCursorPosition((Console.WindowWidth - messageWhenWinLive.Length) / 2, Console.CursorTop);
+                                Console.WriteLine(messageWhenWinLive);
+
+                                Console.ReadKey();
+                            }
+
+                            // Set new positions of enemy
 
                             rowOfEnemy = enemyGenarator.Next(minGeneratedRow, maxGeneratedRow);
                             colOfEnemy = enemyGenarator.Next(minGeneratedCol, maxGeneratedCol);
@@ -103,29 +124,56 @@ namespace MiniSpaceInveder
 
                     if (rowOfProjectile == 0) // when miss the shoot
                     {
-                        string messageWhenLose = "You Lost!";
-                        Console.SetCursorPosition((Console.WindowWidth - messageWhenLose.Length) / 2, Console.CursorTop);
-                        Console.WriteLine(messageWhenLose);
+                        playerLife--;
 
-                        Console.WriteLine();
-
-                        string messageForViewResult = "Press [R] to Restart... or any key to view your Result";
-                        Console.SetCursorPosition((Console.WindowWidth - messageForViewResult.Length) / 2, Console.CursorTop);
-                        Console.WriteLine(messageForViewResult);
-
-                        ConsoleKeyInfo pressedKey = Console.ReadKey(); // Press button
-
-                        if (pressedKey.Key == ConsoleKey.R) // Press R to Restart
+                        if (playerLife >= 0)
                         {
-                            playerPoints = 0;
+                            // Print message in the middle of console
 
-                            rowOfEnemy = enemyGenarator.Next(minGeneratedRow, maxGeneratedRow);
-                            colOfEnemy = enemyGenarator.Next(minGeneratedCol, maxGeneratedCol);
+                            string messageWhenWinLive = $"You have: {playerLife} Life";
+                            Console.SetCursorPosition((Console.WindowWidth - messageWhenWinLive.Length) / 2, Console.CursorTop);
+                            Console.WriteLine(messageWhenWinLive);
+
+                            Console.ReadKey();
                         }
                         else
                         {
-                            break;
+                            // Print message in the middle of console
+
+                            string messageWhenLose = "You Lost!";
+                            Console.SetCursorPosition((Console.WindowWidth - messageWhenLose.Length) / 2, Console.CursorTop);
+                            Console.WriteLine(messageWhenLose);
+
+                            Console.WriteLine();
+
+                            string messageForViewResult = "Press [R] to Restart... or [Enter] to view your Result";
+                            Console.SetCursorPosition((Console.WindowWidth - messageForViewResult.Length) / 2, Console.CursorTop);
+                            Console.WriteLine(messageForViewResult);
+
+                            ConsoleKeyInfo pressedKey = Console.ReadKey(); // Press button
+
+                            if (pressedKey.Key == ConsoleKey.R) // Press R to Restart
+                            {
+                                playerPoints = 0;
+                                playerLife = 0;
+
+                                rowOfEnemy = enemyGenarator.Next(minGeneratedRow, maxGeneratedRow);
+                                colOfEnemy = enemyGenarator.Next(minGeneratedCol, maxGeneratedCol);
+                            }
+                            else if (pressedKey.Key == ConsoleKey.Enter) // Press Enter to view Result
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Environment.Exit(0);
+                            }
                         }
+
+                        // Set new positions of enemy
+
+                        rowOfEnemy = enemyGenarator.Next(minGeneratedRow, maxGeneratedRow);
+                        colOfEnemy = enemyGenarator.Next(minGeneratedCol, maxGeneratedCol);
                     }
                 }
 
@@ -143,7 +191,6 @@ namespace MiniSpaceInveder
             string messageForViewPoints = $"You are points: {playerPoints}";
             Console.SetCursorPosition((Console.WindowWidth - messageForViewPoints.Length) / 2, Console.CursorTop);
             Console.WriteLine(messageForViewPoints);
-
         }
     }
 }
