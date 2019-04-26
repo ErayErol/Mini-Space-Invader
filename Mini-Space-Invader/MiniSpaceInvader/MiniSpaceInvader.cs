@@ -140,19 +140,20 @@ namespace MiniSpaceInveder
                         {
                             // Print message in the middle of console
 
-                            string messageWhenLose = "You Lost!";
+                            string messageWhenLose = "YOU LOST!";
                             Console.SetCursorPosition((Console.WindowWidth - messageWhenLose.Length) / 2, Console.CursorTop);
                             Console.WriteLine(messageWhenLose);
 
                             Console.WriteLine();
 
-                            string messageForViewResult = "Press [R] to Restart... or [Enter] to view your Result";
+                            string messageForViewResult = "- Press [R] to RESTART" + Environment.NewLine +
+                                                          "- Press [Enter] to view your RESULT";
                             Console.SetCursorPosition((Console.WindowWidth - messageForViewResult.Length) / 2, Console.CursorTop);
                             Console.WriteLine(messageForViewResult);
 
                             ConsoleKeyInfo pressedKey = Console.ReadKey(); // Press button
 
-                            if (pressedKey.Key == ConsoleKey.R) // Press R to Restart
+                            if (pressedKey.Key == ConsoleKey.R) // Press R to RESTART
                             {
                                 playerPoints = 0;
                                 playerLife = 0;
@@ -160,7 +161,7 @@ namespace MiniSpaceInveder
                                 rowOfEnemy = enemyGenarator.Next(minGeneratedRow, maxGeneratedRow);
                                 colOfEnemy = enemyGenarator.Next(minGeneratedCol, maxGeneratedCol);
                             }
-                            else if (pressedKey.Key == ConsoleKey.Enter) // Press Enter to view Result
+                            else if (pressedKey.Key == ConsoleKey.Enter) // Press Enter to view RESULT
                             {
                                 break;
                             }
@@ -188,7 +189,7 @@ namespace MiniSpaceInveder
 
             Console.WriteLine();
 
-            string messageForViewPoints = $"You are points: {playerPoints}";
+            string messageForViewPoints = $"You have: {playerPoints} points";
             Console.SetCursorPosition((Console.WindowWidth - messageForViewPoints.Length) / 2, Console.CursorTop);
             Console.WriteLine(messageForViewPoints);
         }
