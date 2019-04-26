@@ -1,5 +1,3 @@
-Mini Space Invader
-
 This is a little game that I did for fun in my free time. 
 
 About the game:
