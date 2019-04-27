@@ -1,4 +1,8 @@
-This is a little game that I did for fun in my free time. 
+This is a little game that I made for fun in my free time. 
+
+How to start the Game:
+
+- Runs in the console
 
 About the game:
 
